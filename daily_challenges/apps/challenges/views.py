@@ -43,17 +43,15 @@ def challenge_by_number(request, month_number):
     try:
         month = get_month_by_number(month_number)
     except ValueError:
-        return HttpResponseNotFound('Mês inválido!')
+        return HttpResponseNotFound('Invalid month!')
 
     return HttpResponseRedirect(reverse('challenge-detail', args=[month]))
 
 
 def challenge_list(request):
-
-    sent_html = '<ul>'
-
+    list_items = ''
     for month in CHALLENGES_BY_MONTH.keys():
-        sent_html += f'''
+        list_items += f'''
                             <li>
                                 <a href="{reverse('challenge-detail', args=[month])}">
                                     {month}
@@ -61,6 +59,6 @@ def challenge_list(request):
                             </li>\n
                         '''
 
-    sent_html += '</ul>'
+    sent_html = f'<ul>{list_items}</ul>'
 
     return HttpResponse(sent_html, status=200)
