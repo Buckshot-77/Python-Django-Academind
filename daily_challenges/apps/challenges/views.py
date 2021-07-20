@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import render
 
 # Create your views here.
 CHALLENGES_BY_MONTH = {
@@ -32,9 +33,10 @@ def get_month_by_number(month_number):
 
 def challenge_detail(request, month):
     try:
-        month_lowercase = month.lower()
-        challenge = CHALLENGES_BY_MONTH[month_lowercase]
-        return HttpResponse(challenge, status=200)
+        challenge = CHALLENGES_BY_MONTH[month.lower()]
+        return render(request, "challenges/challenge.html", {
+            'challenge': challenge
+        })
     except KeyError:
         return HttpResponseNotFound('An invalid month was given')
 
